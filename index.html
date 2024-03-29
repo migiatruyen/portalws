@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring Boot Web Service Consumer</title>
+</head>
+<body>
+    <button onclick="getData()">Get Data</button>
+    <div id="output"></div>
+
+    <script>
+        function getData() {
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "https://localhost:8443/api/getaxitems?hscode=8410", true);
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        var xml = xhr.responseXML;
+                        var output = document.getElementById("output");
+                        output.textContent = xmlToString(xml);
+                    } else {
+                        console.error('Error:', xhr.status);
+                    }
+                }
+            };
+
+            xhr.send();
+        }
+
+        // Helper function to convert XML to string
+        function xmlToString(xml) {
+            var serializer = new XMLSerializer();
+            return serializer.serializeToString(xml);
+        }
+    </script>
+</body>
+</html>
